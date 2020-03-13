@@ -13,13 +13,15 @@ function Square(props) {
     );
 }
 
+const initialState = {
+    squares: Array(9).fill(null),
+    xIsNext: true
+};
+
 class Board extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            squares: Array(9).fill(null),
-            xIsNext: true
-        };
+        this.state = initialState;
     }
 
     handleClick(i) {
@@ -43,19 +45,24 @@ class Board extends React.Component {
         );
     }
 
+    handleReset = () => {
+        console.log("reset button called");
+        this.setState({ ...initialState });
+    };
+
     render() {
         const winner = calculateWinner(this.state.squares);
         let status;
         if (winner) {
             status = "Winner: " + winner;
         } else {
-            status = "Next player: " + (this.state.xIsNext ? "X" : "O");
+            status = "Turn of player: " + (this.state.xIsNext ? "X" : "O");
         }
         // const status = "Next player: " + (this.state.xIsNext ? "X" : "O");
 
         return (
             <div>
-                <div className="status d-flex justify-content-center font-weight-bold">
+                <div className="status d-flex justify-content-center ">
                     {status}
                 </div>
                 <div className="board-row">
@@ -73,6 +80,15 @@ class Board extends React.Component {
                     {this.renderSquare(7)}
                     {this.renderSquare(8)}
                 </div>
+                <div className="row d-flex justify-content-center">
+                    <button
+                        type="submit"
+                        className=" btn btn-lg btn-danger m-5"
+                        onClick={() => this.handleReset()}
+                    >
+                        Reset
+                    </button>
+                </div>
             </div>
         );
     }
@@ -81,10 +97,19 @@ class Board extends React.Component {
 class Game extends React.Component {
     render() {
         return (
-            <div className="game container  mt-5 p-5">
-                <h2 className="d-flex justify-content-center text-info ">
+            <div className="game  mt-5 p-5">
+                <h1 className=" game-title d-flex justify-content-center text-info  mb-2">
                     Tic Tac Toe
-                </h2>
+                </h1>
+                <small className="small-text d-flex justify-content-center text-info mb-3">
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://www.wikihow.com/Play-Tic-Tac-Toe"
+                    >
+                        How to play?
+                    </a>
+                </small>
                 <div className="row">
                     <div className="col">
                         <div className="d-flex justify-content-center game-board ">
